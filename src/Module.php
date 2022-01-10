@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Weirdan\Codeception\Psalm;
 
+use Behat\Gherkin\Node\PyStringNode;
 use Codeception\Exception\ModuleRequireException;
 use Codeception\Exception\TestRuntimeException;
 use Codeception\Module as BaseModule;
@@ -145,9 +146,9 @@ class Module extends BaseModule
     /**
      * @Then I see exit code :code
      */
-    public function seeExitCode(int $exitCode): void
+    public function seeExitCode($exitCode): void
     {
-        if ($this->exitCode === $exitCode) {
+        if ($this->exitCode === (int) $exitCode) {
             return;
         }
 
@@ -237,9 +238,9 @@ class Module extends BaseModule
     /**
      * @Given I have the following code preamble :code
      */
-    public function haveTheFollowingCodePreamble(string $code): void
+    public function haveTheFollowingCodePreamble(PyStringNode $code): void
     {
-        $this->preamble = $code;
+        $this->preamble = $code->getRaw();
     }
 
     /**
@@ -312,25 +313,25 @@ class Module extends BaseModule
     /**
      * @Given I have the following config :config
      */
-    public function haveTheFollowingConfig(string $config): void
+    public function haveTheFollowingConfig(PyStringNode $config): void
     {
-        $this->psalmConfig = $config;
+        $this->psalmConfig = $config->getRaw();
     }
 
     /**
      * @Given I have the following code :code
      */
-    public function haveTheFollowingCode(string $code): void
+    public function haveTheFollowingCode(PyStringNode $code): void
     {
         $file = sprintf(
             '%s/%s.php',
             rtrim($this->config['default_dir'], '/'),
-            sha1($this->preamble . $code)
+            sha1($this->preamble . $code->getRaw())
         );
 
         $this->fs()->writeToFile(
             $file,
-            $this->preamble . $code
+            $this->preamble . $code->getRaw()
         );
     }
 
@@ -382,10 +383,10 @@ class Module extends BaseModule
     /**
      * @Given I have the following code in :arg1 :arg2
      */
-    public function haveTheFollowingCodeIn(string $filename, string $code): void
+    public function haveTheFollowingCodeIn(string $filename, PyStringNode $code): void
     {
         $file = rtrim($this->config['default_dir'], '/') . '/' . $filename;
-        $this->fs()->writeToFile($file, $code);
+        $this->fs()->writeToFile($file, $code->getRaw());
     }
 
     /**
