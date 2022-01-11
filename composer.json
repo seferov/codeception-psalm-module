@@ -18,7 +18,7 @@
     "require": {
         "php": "^7.1 || ^8.0",
         "ext-json": "*",
-        "codeception/codeception": "^4.1.28 || ^5.0.x-dev",
+        "codeception/codeception": "^4.1.28 || ^5.0.x-dev@dev",
         "composer/semver": "^1.4 || ^2.0 || ^3.0",
         "codeception/module-cli": "^1.0.0 || ^2.0.0",
         "codeception/module-filesystem": "^1.0.2 || ^2.0.1"
